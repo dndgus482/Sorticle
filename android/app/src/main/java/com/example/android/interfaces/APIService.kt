@@ -1,10 +1,11 @@
 package com.example.android.interfaces
 
-import com.example.android.model.ArticleItem
+import com.example.android.model.ArticlePreview
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface APIService {
     @GET("getList")
-    fun getList(): Call<ArticleItem?>
+    fun getList(): Call<ArticlePreview>
 }

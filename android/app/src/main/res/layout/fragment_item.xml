@@ -15,20 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:id="@+id/rl_image">
-
-                <ImageView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/article_image"
-                    android:src="@mipmap/ic_launcher"/>
-            </RelativeLayout>
-
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -53,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
-                        android:id="@+id/article_content"
+                        android:id="@+id/article_pubDate"
                         android:layout_below="@+id/article_title"
                         />
 
