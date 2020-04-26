@@ -2,10 +2,8 @@ package com.example.android.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,14 +14,9 @@ import com.example.android.R
 import com.example.android.helper.NetworkHelper
 
 import com.example.android.model.ArticlePreview
-import kotlinx.android.synthetic.main.fragment_article.*
-import kotlinx.android.synthetic.main.fragment_item_list.*
-import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.recyclerView
 import retrofit2.Call
 import retrofit2.Callback
-import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -33,28 +26,44 @@ import kotlin.collections.ArrayList
  */
 class ItemFragment : Fragment() {
 
-    // TODO: Customize parameters
-
+    var thisView : View? = null
     private var listener: OnListFragmentInteractionListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
-        val recycle = view.recyclerView as RecyclerView
+        thisView = inflater.inflate(R.layout.fragment_item_list, container, false)
+        return thisView
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnListFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    fun getList() {
+        val recycle = thisView?.recyclerView as RecyclerView
 
         var errorMessage = {msg : String ->
             val myToast: Toast = Toast.makeText(
-                container?.context,
+                thisView?.context,
                 msg,
                 Toast.LENGTH_LONG
             )
             myToast.setGravity(Gravity.CENTER, 0, 0)
             myToast.show()
         }
-
-        var response = NetworkHelper.apiService.getList().enqueue(object : Callback<ArticlePreview> {
+        var response = NetworkHelper.apiService.getList("코로나").enqueue(object : Callback<ArticlePreview> {
             override fun onFailure(call: Call<ArticlePreview>, t: Throwable) {
                 errorMessage("network Failure")
                 t.printStackTrace()
@@ -86,24 +95,6 @@ class ItemFragment : Fragment() {
                 }
             }
         })
-
-        // Set the adapter
-
-        return view
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
-            listener = context
-        } else {
-            //throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 
     /**
@@ -119,6 +110,6 @@ class ItemFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: ArticlePreview.Item?)
+        fun onListFragmentInteraction(id : Int)
     }
 }

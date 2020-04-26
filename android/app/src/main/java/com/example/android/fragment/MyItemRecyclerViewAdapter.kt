@@ -10,8 +10,6 @@ import com.example.android.R
 
 import com.example.android.fragment.ItemFragment.OnListFragmentInteractionListener
 import com.example.android.model.ArticlePreview
-import kotlinx.android.synthetic.main.activity_article.view.*
-import kotlinx.android.synthetic.main.fragment_article.view.*
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
 
@@ -22,13 +20,12 @@ class MyItemRecyclerViewAdapter(
 
     private val mOnClickListener: View.OnClickListener
 
-
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as ArticlePreview.Item
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+            mListener?.onListFragmentInteraction(3)
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -52,7 +49,7 @@ class MyItemRecyclerViewAdapter(
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val id: Int = 1;
-        val title: TextView = mView.article_title
-        val pubDate: TextView = mView.article_pubDate
+        val title: TextView = mView.article_list_title
+        val pubDate: TextView = mView.article_list_pubDate
     }
 }
