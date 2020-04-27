@@ -2,9 +2,11 @@ package com.example.android.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
+import androidx.core.text.HtmlCompat.fromHtml
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.R
 import com.example.android.helper.NetworkHelper
@@ -43,12 +45,17 @@ class ArticleActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val result = response.body()
-                    val list = ArrayList<ArticlePreview.Item>();
+                    val list = ArrayList<ArticlePreview.Item>()
+                    val webView = article_article_body
+                    webView.settings.javaScriptEnabled = true
+                    webView.settings.domStorageEnabled = true
                     result?.let{
                         article_source.text = it.source
                         article_title.text = it.title
                         article_pubDate.text = it.pubDate.toString()
                         article_originallink.text = it.originallink
+                        webView.loadData(fromHtml(it.article_body, Html.FROM_HTML_MODE_LEGACY).toString(), "text/html", "UTF-8")
+
                     }
                 }
                 else {
