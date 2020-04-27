@@ -2,6 +2,7 @@ package com.example.android.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,7 +52,7 @@ class ItemFragment : Fragment() {
         listener = null
     }
 
-    fun getList() {
+    fun getList(q : String) {
         val recycle = thisView?.recyclerView as RecyclerView
 
         var errorMessage = {msg : String ->
@@ -63,7 +64,7 @@ class ItemFragment : Fragment() {
             myToast.setGravity(Gravity.CENTER, 0, 0)
             myToast.show()
         }
-        var response = NetworkHelper.apiService.getList("코로나").enqueue(object : Callback<ArticlePreview> {
+        var response = NetworkHelper.apiService.getList(q).enqueue(object : Callback<ArticlePreview> {
             override fun onFailure(call: Call<ArticlePreview>, t: Throwable) {
                 errorMessage("network Failure")
                 t.printStackTrace()

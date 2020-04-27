@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity(), ItemFragment.OnListFragmentInteraction
         var articleListFragment = ItemFragment()
         supportFragmentManager.beginTransaction().add(R.id.articleListContainer, articleListFragment).commit()
 
-        main_button.setOnClickListener { articleListFragment.getList() }
+        main_button.setOnClickListener { articleListFragment.getList("코로나") }
     }
 
     override fun onListFragmentInteraction(id : Int) {

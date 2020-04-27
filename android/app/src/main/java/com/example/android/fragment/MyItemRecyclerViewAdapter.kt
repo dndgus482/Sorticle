@@ -1,5 +1,6 @@
 package com.example.android.fragment
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +26,7 @@ class MyItemRecyclerViewAdapter(
             val item = v.tag as ArticlePreview.Item
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(3)
+            mListener?.onListFragmentInteraction(item.id)
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,7 +49,6 @@ class MyItemRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val id: Int = 1;
         val title: TextView = mView.article_list_title
         val pubDate: TextView = mView.article_list_pubDate
     }
