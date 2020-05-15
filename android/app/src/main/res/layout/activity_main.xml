@@ -1,10 +1,13 @@
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@android:color/primary_text_light">
 
     <Button
         android:id="@+id/main_button"
@@ -12,9 +15,8 @@
         android:layout_height="wrap_content"
         android:text="button" />
 
-    <FrameLayout
-        android:id="@+id/articleListContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="22dp" />
-</LinearLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/fragment_item_list" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

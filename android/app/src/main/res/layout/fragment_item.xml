@@ -7,7 +7,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:id="@+id/cv">
 
         <LinearLayout
@@ -54,32 +53,6 @@
                 android:layout_height="match_parent"
                 android:background="#ddd">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:background="#fff"
-                    android:layout_marginBottom="1dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Small Text"
-                        android:id="@+id/footer1"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Small Text"
-                        android:id="@+id/footer2"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
-                </RelativeLayout>
             </LinearLayout>
 
         </LinearLayout>
