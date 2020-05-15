@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.android.R
+import com.example.android.activity.OnListFragmentInteractionListener
 
 
 import com.example.android.model.ArticlePreview
@@ -16,7 +17,7 @@ import java.util.*
 
 class MyItemRecyclerViewAdapter(
     private val mValues: List<ArticlePreview.Item>,
-    private val mListener: com.example.android.activity.OnListFragmentInteractionListener?
+    private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener

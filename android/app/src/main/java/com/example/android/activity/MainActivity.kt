@@ -1,35 +1,62 @@
 package com.example.android.activity
 
-import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import kotlinx.android.synthetic.main.activity_main.*
+import android.content.Intent
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.GraphItem
+import com.example.android.GraphView
 import com.example.android.R
 import com.example.android.fragment.MyItemRecyclerViewAdapter
 import com.example.android.helper.NetworkHelper
 import com.example.android.interfaces.LockBottomSheetBehavior
 import com.example.android.model.ArticlePreview
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import retrofit2.Call
 import retrofit2.Callback
 
-
 class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
 
-    private var listener: OnListFragmentInteractionListener? = null
 
+    var count = 1
+    private var listener: OnListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        add_button.setOnClickListener {
+            count++
+            if(count > 8) count = 8
+            update()
+        }
+
+        subtract_button.setOnClickListener {
+            count--
+            if(count <= 0) count = 1
+            update()
+        }
+
+        graph_view.actionListener = object : GraphView.GraphViewActionListener {
+            override fun onTopicClicked(item: GraphItem) {
+                Log.i("MainActivity", "onTopicClicked : " + item.name)
+            }
+
+            override fun onFocusingTopicChanged(before: GraphItem?, after: GraphItem?) {
+                Log.i("MainActivity", "onFocusingTopicChanged : " + (before?.name ?: "root") + " -> " + (after?.name ?: "root"))
+            }
+        }
+
+        update()
+
         if(this is OnListFragmentInteractionListener)
             listener = this
         val behavior = BottomSheetBehavior.from(bottom_sheet)
@@ -63,6 +90,20 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
             }
         }
         behavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+    }
+
+    private fun update() {
+        val itemList = ArrayList<GraphItem>()
+        for(i in 0 until count) {
+            itemList.add(GraphItem("Item $i", arrayListOf(
+                GraphItem("Item $i-0", null),
+                GraphItem("Item $i-1", null),
+                GraphItem("Item $i-2", null),
+                GraphItem("Item $i-3", null)
+            )))
+        }
+        graph_view.itemList = itemList
     }
 
     override fun onListFragmentInteraction(id : Int) {
@@ -118,9 +159,7 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
         })
     }
 
-
 }
-
 interface OnListFragmentInteractionListener {
     // TODO: Update argument type and name
     fun onListFragmentInteraction(id : Int)
