@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "303578128514",
+    "firebase_url": "https://sorticle.firebaseio.com",
+    "project_id": "sorticle",
+    "storage_bucket": "sorticle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303578128514:android:fe0f7e119f7272e78f149b",
+        "android_client_info": {
+          "package_name": "com.example.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303578128514-8urjj106ml5bu0r1hgs47i2p782lfp87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq3X75Ob_Pgd8pqM83KESGMB9I5K7aoOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303578128514-8urjj106ml5bu0r1hgs47i2p782lfp87.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
