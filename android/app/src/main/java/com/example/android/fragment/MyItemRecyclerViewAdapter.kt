@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.android.R
-import com.example.android.activity.OnListFragmentInteractionListener
 
 
 import com.example.android.model.ArticlePreview

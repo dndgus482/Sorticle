@@ -1,5 +1,6 @@
 package com.example.android.activity
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -39,6 +40,7 @@ class ArticleActivity : AppCompatActivity() {
                 t.printStackTrace()
             }
 
+            @SuppressLint("WrongConstant")
             override fun onResponse(
                 call: Call<Article?>,
                 response: retrofit2.Response<Article?>
