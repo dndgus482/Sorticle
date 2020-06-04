@@ -29,15 +29,17 @@
                     android:id="@+id/rl_title">
 
                     <TextView
+                        android:id="@+id/article_list_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="New Text"
-                        android:id="@+id/article_list_title" />
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="New Text"
+                        android:text=""
                         android:id="@+id/article_list_pubDate"
                         android:layout_below="@+id/article_list_title"
                         />

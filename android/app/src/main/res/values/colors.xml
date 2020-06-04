@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="listWhite">#cccccc</color>
+    <color name="demo_dark_transparent">#12000000</color>
 </resources>

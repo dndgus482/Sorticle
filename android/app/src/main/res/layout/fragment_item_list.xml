@@ -9,7 +9,7 @@
     android:id="@+id/bottom_sheet"
     android:orientation="vertical"
     style="@style/AppBottomSheetTheme"
-    app:layout_behavior="com.example.android.interfaces.LockBottomSheetBehavior"
+    app:layout_behavior="@string/bottom_sheet_behavior"
     app:behavior_hideable="true"
     app:behavior_peekHeight="300dp">
     <ImageButton
@@ -20,13 +20,20 @@
         android:src="@drawable/ic_expand_less_24px"
         android:contentDescription="Expand" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        tools:listitem="@layout/fragment_item_list"/>
 
+        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            app:shimmer_demo_child_count="10"
+            app:shimmer_demo_grid_child_count="2"
+            app:shimmer_demo_layout_manager_type="linear_vertical"
+            app:shimmer_demo_layout="@layout/fragment_item_shimmer"
+
+            tools:listitem="@layout/fragment_item_list">
+
+        </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
 </LinearLayout>
