@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
+import sort
 RESULT_PATH="C:/Users/hablo/PycharmProjects/News/"
 txt_filename = "news.txt"
 now = datetime.now()
@@ -15,7 +16,7 @@ now = datetime.now()
 def crawler(maxpage, query):
     page = 1
     maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지 ...81=9페이지 , 91=10페이지, 101=11페이지
-    f = open(RESULT_PATH + query + txt_filename, 'w', encoding='utf-8')
+    f = open(RESULT_PATH + query + txt_filename, 'w', encoding='cp949')
 
     while page < maxpage_t:
         print(int(page/10 + 1),  '/',  maxpage)
@@ -58,16 +59,19 @@ def get_news(n_url):
     return news_detail
 
 
-def excel_make(query):
-    data = pd.read_csv(RESULT_PATH + query +txt_filename, sep='\t', header=None, error_bad_lines=False)
+def csv_make(query):
+    data = pd.read_csv(RESULT_PATH + query +txt_filename, sep='\t', header=None, error_bad_lines=False, encoding = 'cp949')
     data.columns = ['years', 'company', 'title', 'contents', 'link']
     print(data)
-    xlsx_outputFileName = query + ' result.xlsx'
-    data.to_excel(RESULT_PATH + xlsx_outputFileName, encoding='utf-8')
+    csv_outputFileName = query + '.csv'
+    data.to_csv(RESULT_PATH + csv_outputFileName, encoding='cp949')
 
 def main():
-    maxpage = input("최대 검색할 페이지수 입력하시오: ")
+    #maxpage = input("최대 검색할 페이지수 입력하시오: ")
+    maxpage = 10
     query = input("검색어 입력: ")
     crawler(maxpage, query)
-    excel_make(query)
+    csv_make(query)
+    sort.sub_main(query)
+
 main()
