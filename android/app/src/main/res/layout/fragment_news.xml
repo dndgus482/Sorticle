@@ -49,7 +49,7 @@
     </LinearLayout>
 
 
-    <include layout="@layout/fragment_item_list" />
+    <include layout="@layout/news_item_list" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

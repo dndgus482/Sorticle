@@ -19,8 +19,8 @@ import com.example.android.errorMessage
 import com.example.android.helper.NetworkHelper
 import com.example.android.model.ArticlePreview
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_item_list.*
-import kotlinx.android.synthetic.main.fragment_item_list.view.*
+import kotlinx.android.synthetic.main.news_item_list.*
+import kotlinx.android.synthetic.main.news_item_list.view.*
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.fragment_news.view.*
 import retrofit2.Call

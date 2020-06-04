@@ -10,7 +10,7 @@ import com.example.android.R
 
 import com.example.android.model.ArticlePreview
 
-import kotlinx.android.synthetic.main.fragment_item.view.*
+import kotlinx.android.synthetic.main.news_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,7 +32,7 @@ class MyItemRecyclerViewAdapter(
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_item, parent, false)
+            .inflate(R.layout.news_item, parent, false)
         today = Date()
         return ViewHolder(view)
     }
