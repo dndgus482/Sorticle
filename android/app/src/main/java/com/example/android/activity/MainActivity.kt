@@ -132,6 +132,7 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
     }
 
     fun getList(q : String) {
+        recyclerView.showShimmerAdapter()
         val recycle = recyclerView as RecyclerView
         val errorMessage = {msg : String ->
             val myToast: Toast = Toast.makeText(
