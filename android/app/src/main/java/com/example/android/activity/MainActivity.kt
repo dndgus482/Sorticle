@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
         })
 
         button_expand.setOnClickListener {
-            when(behavior.state) {
+            when(behavior.state) {  
                 BottomSheetBehavior.STATE_COLLAPSED -> {
                     behavior.state = BottomSheetBehavior.STATE_EXPANDED
                     button_expand.setImageResource(R.drawable.ic_expand_less_24px)
@@ -108,6 +108,7 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
             }
         }
         behavior.state = BottomSheetBehavior.STATE_HIDDEN
+        recyclerView.setDemoShimmerDuration(0)
 
     }
 
@@ -132,7 +133,6 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
 
     fun getList(q : String) {
         val recycle = recyclerView as RecyclerView
-        recyclerView.showShimmerAdapter()
         val errorMessage = {msg : String ->
             val myToast: Toast = Toast.makeText(
                 this,
@@ -147,7 +147,6 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
             override fun onFailure(call: Call<ArticlePreview>, t: Throwable) {
                 errorMessage("network Failure")
                 t.printStackTrace()
-                recyclerView.hideShimmerAdapter()
             }
 
 
@@ -172,7 +171,6 @@ class MainActivity : AppCompatActivity(), OnListFragmentInteractionListener {
                 else {
                     errorMessage("${response.code()} error")
                 }
-                //recyclerView.hideShimmerAdapter()
             }
         })
     }

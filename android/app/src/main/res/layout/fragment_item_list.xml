@@ -29,7 +29,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             app:shimmer_demo_child_count="10"
-            app:shimmer_demo_grid_child_count="2"
             app:shimmer_demo_layout_manager_type="linear_vertical"
             app:shimmer_demo_layout="@layout/fragment_item_shimmer"
 
