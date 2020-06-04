@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">android</string>
     <string name="peek_height">200dp</string>
+    <string name="history">히스토리</string>
+    <string name="bookmark">북마크</string>
+    <string name="news">뉴스</string>
 </resources>
