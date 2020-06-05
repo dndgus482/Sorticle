@@ -1,69 +1,49 @@
 package com.example.android.activity
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
-import android.view.Gravity
-import android.widget.Toast
-import androidx.core.text.HtmlCompat.fromHtml
-import androidx.recyclerview.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
 import com.example.android.R
-import com.example.android.helper.NetworkHelper
-import com.example.android.model.Article
 import com.example.android.model.ArticlePreview
 import kotlinx.android.synthetic.main.activity_article.*
-import retrofit2.Call
-import retrofit2.Callback
+
 
 class ArticleActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
-        val id = intent.getIntExtra("id", 0)
-        var errorMessage = {msg : String ->
-            val myToast: Toast = Toast.makeText(
-                applicationContext,
-                msg,
-                Toast.LENGTH_LONG
-            )
-            myToast.setGravity(Gravity.CENTER, 0, 0)
-            myToast.show()
+
+        val id = intent.getSerializableExtra("id") as ArticlePreview
+
+        article_webview.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                return false
+            }
         }
-        val response = NetworkHelper.apiService.getNews(id).enqueue(object :
-            Callback<Article> {
-            override fun onFailure(call: Call<Article>, t: Throwable) {
-                errorMessage("network Failure")
-                t.printStackTrace()
-            }
+        article_webview.loadUrl(id.link)
 
-            @SuppressLint("WrongConstant")
-            override fun onResponse(
-                call: Call<Article?>,
-                response: retrofit2.Response<Article?>
-            ) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    val list = ArrayList<ArticlePreview.Item>()
-                    val webView = article_article_body
-                    webView.settings.javaScriptEnabled = true
-                    webView.settings.domStorageEnabled = true
-                    result?.let{
-                        article_source.text = it.source
-                        article_title.text = it.title
-                        article_pubDate.text = it.pubDate.toString()
-                        article_originallink.text = it.originallink
-                        webView.loadData(fromHtml(it.article_body, Html.FROM_HTML_MODE_LEGACY).toString(), "text/html", "UTF-8")
-
-                    }
-                }
-                else {
-                    errorMessage("${response.code()} error")
-                }
-            }
-        })
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.article_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }

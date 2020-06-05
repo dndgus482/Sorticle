@@ -16,8 +16,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var newsFragment = NewsFragment()
-        var historyFragment : HistoryFragment? = null
-        var bookmarkFragment : BookmarkFragment? = null
+        var historyFragment: HistoryFragment? = null
+        var bookmarkFragment: BookmarkFragment? = null
 
         supportFragmentManager.beginTransaction().add(R.id.main_frame, newsFragment).commit()
 
@@ -25,31 +25,38 @@ class MainActivity : AppCompatActivity() {
         bottom_navi.setOnNavigationItemSelectedListener {
             if (it.itemId == R.id.action_news) {
                 supportFragmentManager.beginTransaction().show(newsFragment).commit()
-                if(historyFragment != null) supportFragmentManager.beginTransaction().hide(historyFragment!!).commit()
-                if(bookmarkFragment != null)supportFragmentManager.beginTransaction().hide(bookmarkFragment!!).commit()
+                if (historyFragment != null) supportFragmentManager.beginTransaction()
+                    .hide(historyFragment!!).commit()
+                if (bookmarkFragment != null) supportFragmentManager.beginTransaction()
+                    .hide(bookmarkFragment!!).commit()
                 return@setOnNavigationItemSelectedListener true
-            } else if(it.itemId == R.id.action_bookmark) {
-                if(bookmarkFragment == null) {
+            } else if (it.itemId == R.id.action_bookmark) {
+                if (bookmarkFragment == null) {
                     bookmarkFragment = BookmarkFragment()
-                    supportFragmentManager.beginTransaction().add(R.id.main_frame, bookmarkFragment!!).commit()
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.main_frame, bookmarkFragment!!).commit()
                 }
                 supportFragmentManager.beginTransaction().hide(newsFragment).commit()
-                if(historyFragment != null)supportFragmentManager.beginTransaction().hide(historyFragment!!).commit()
-                if(bookmarkFragment != null)supportFragmentManager.beginTransaction().show(bookmarkFragment!!).commit()
+                if (historyFragment != null) supportFragmentManager.beginTransaction()
+                    .hide(historyFragment!!).commit()
+                if (bookmarkFragment != null) supportFragmentManager.beginTransaction()
+                    .show(bookmarkFragment!!).commit()
                 return@setOnNavigationItemSelectedListener true
 
-            } else if(it.itemId == R.id.action_history) {
-                if(historyFragment == null) {
+            } else if (it.itemId == R.id.action_history) {
+                if (historyFragment == null) {
                     historyFragment = HistoryFragment()
-                    supportFragmentManager.beginTransaction().add(R.id.main_frame, historyFragment!!).commit()
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.main_frame, historyFragment!!).commit()
                 }
 
                 supportFragmentManager.beginTransaction().hide(newsFragment).commit()
-                if(historyFragment != null)supportFragmentManager.beginTransaction().show(historyFragment!!).commit()
-                if(bookmarkFragment != null)supportFragmentManager.beginTransaction().hide(bookmarkFragment!!).commit()
+                if (historyFragment != null) supportFragmentManager.beginTransaction()
+                    .show(historyFragment!!).commit()
+                if (bookmarkFragment != null) supportFragmentManager.beginTransaction()
+                    .hide(bookmarkFragment!!).commit()
                 return@setOnNavigationItemSelectedListener true
-            }
-            else {
+            } else {
                 return@setOnNavigationItemSelectedListener false
             }
         }
