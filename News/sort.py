@@ -16,8 +16,8 @@ def getNVM_lemma(text):
     parsed = tokenizer.parse(text)
     word_tag = [w for w in parsed.split("\n")]
     pos = []
-    # NNP: 고유명사 / VV :동사 / VA : 형용사 / VX: 보조 용언 / VCP : 긍정지정사 / VCN : 부정지정사 /  MAG :일반 부사
-    tags = ['NNG', 'NNP', 'VV', 'VA', 'VX', 'VCP', 'VCN', 'MAG']
+    # NNP: 고유명사 / VA : 형용사 / VX: 보조 용언 / VCP : 긍정지정사 / VCN : 부정지정사 /  MAG :일반 부사
+    tags = ['NNG', 'NNP', 'VA', 'VX', 'VCP', 'VCN', 'MAG']
     for word_ in word_tag[:-2]:
         word = word_.split("\t")
         tag = word[1].split(",")
@@ -25,7 +25,7 @@ def getNVM_lemma(text):
             continue
         if tag[-1] != '*':
             t = tag[-1].split('/')
-            if len(t[0]) > 1 and ('VV' in t[1] or 'VA' in t[1] or 'VX' in t[1]):
+            if len(t[0]) > 1 and ('VA' in t[1] or 'VX' in t[1]):
                 pos.append(t[0])
         else:
             if tag[0] in tags:
