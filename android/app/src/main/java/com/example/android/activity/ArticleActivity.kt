@@ -1,12 +1,16 @@
 package com.example.android.activity
 
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import com.example.android.R
+import com.example.android.model.AppDatabase
 import com.example.android.model.ArticlePreview
 import kotlinx.android.synthetic.main.activity_article.*
 
@@ -20,14 +24,32 @@ class ArticleActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
 
-        val id = intent.getSerializableExtra("id") as ArticlePreview
+        val article = intent.getSerializableExtra("id") as ArticlePreview
+
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            article_webview.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
+        }
+        article_webview.settings.domStorageEnabled = true;
+        article_webview.settings.useWideViewPort = true;
+        article_webview.settings.setAppCacheEnabled(true);
+        article_webview.settings.loadsImagesAutomatically = true;
+        article_webview.settings.javaScriptEnabled = true;
 
         article_webview.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 return false
             }
         }
-        article_webview.loadUrl(id.link)
+        article_webview.loadUrl(article.link)
+
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "database-name"
+        ).allowMainThreadQueries()
+            .build()
+
+        db.articleDao().insertAll(article)
 
     }
 

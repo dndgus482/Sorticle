@@ -15,6 +15,7 @@ import com.example.android.GraphItem
 import com.example.android.GraphView
 import com.example.android.R
 import com.example.android.activity.ArticleActivity
+import com.example.android.interfaces.OnListFragmentInteractionListener
 import com.example.android.model.ArticlePreview
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.DataSnapshot
@@ -36,7 +37,7 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
     }
 
     var count = 1
-    private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var listener: OnListFragmentInteractionListener
     private lateinit var v: View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,7 +177,7 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
 
                 with(recycle) {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = MyItemRecyclerViewAdapter(list, listener)
+                    adapter = MyItemRecyclerViewAdapter(list, listener, R.layout.news_item)
                 }
             }
 
@@ -190,6 +191,3 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
     }
 }
 
-interface OnListFragmentInteractionListener {
-    fun onListFragmentInteraction(id: ArticlePreview)
-}
