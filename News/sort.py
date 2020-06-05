@@ -5,7 +5,6 @@ import os
 import numpy as np
 import csv
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from matplotlib import pyplot as plt
 from nltk.corpus import stopwords
 
 from pandas import DataFrame
