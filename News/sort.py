@@ -81,19 +81,25 @@ def keyword_select(file, keyword):
 def sub_main(filename):
     csv_file = pd.read_csv(filename + ".csv", header=0, encoding='cp949')
     keyword = filename
-    keyword_select(csv_file, keyword)
+    #한번만 fake news 삭제
+    fake_news(csv_file,keyword)
+    
     for i in range(5):
         keyword = filename + '_' + str(i + 1)
         first = pd.read_csv(keyword + ".csv", header=0, encoding='cp949')
         keyword_select(first, keyword)
 
 
-# 본 파일 받아서 text_select 돌리기
-# 생성된 파일로 받기
-
+def fake_news (file,keyword):
+    # contents에 '기자' 미포함 시 행 삭제
+    fake = file[file['contents'].str.contains('기자', na=False)]
+    #하나라도 빈 칸이 있을 시 행 삭제
+    fake2 = df1[['years', 'company', 'contents','title','link']].dropna()
+    keyword_select(fake2,keyword)
+    #########계속 추가하기
+    
 
 # 빈도수 많은 순으로 재정리
-
 
 def frequency(vect, dtm, keyword):
     vocab = dict()
