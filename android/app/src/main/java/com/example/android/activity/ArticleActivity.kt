@@ -10,6 +10,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.room.Room
 import com.example.android.R
 import com.example.android.model.AppDatabase
@@ -22,11 +23,7 @@ import kotlinx.android.synthetic.main.activity_article.*
 class ArticleActivity : AppCompatActivity() {
 
     private val db: AppDatabase by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "database-name"
-        ).allowMainThreadQueries()
-            .build()
+        AppDatabase.getInstance(this)!!
     }
 
     private val article: ArticlePreview by lazy {

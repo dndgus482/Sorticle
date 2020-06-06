@@ -1,5 +1,6 @@
 package com.example.android.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
@@ -7,7 +8,7 @@ abstract class BookmarkDao() {
     @Query(
         "SELECT ArticlePreview.* FROM ArticlePreview INNER JOIN Bookmark ON unnamed = id ORDER BY createdAt DESC"
     )
-    abstract fun getAll(): List<ArticlePreview>
+    abstract fun getAll(): LiveData<List<ArticlePreview>>
 
     //    @Query("SELECT * FROM History WHERE id IN (:ids)")
 //    abstract fun loadAllByIds(ids: IntArray): List<ArticlePreview>

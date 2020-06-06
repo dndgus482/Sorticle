@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -21,11 +22,7 @@ class BookmarkFragment : Fragment(), OnListFragmentInteractionListener {
 
     private lateinit var listener: OnListFragmentInteractionListener
     private val db: AppDatabase by lazy {
-        Room.databaseBuilder(
-            requireActivity(),
-            AppDatabase::class.java, "database-name"
-        ).allowMainThreadQueries()
-            .build()
+        AppDatabase.getInstance(requireContext())!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,12 +38,15 @@ class BookmarkFragment : Fragment(), OnListFragmentInteractionListener {
         v.recyclerview.showShimmerAdapter()
 
         listener = this
-        val list = db.bookmarkDao().getAll()
         val recycle = v.recyclerview as RecyclerView
-        with(recycle) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = MyItemRecyclerViewAdapter(list, listener, R.layout.bookmark_item)
-        }
+
+//        val list = db.bookmarkDao().getAll()
+        db.bookmarkDao().getAll().observe(this, Observer {list ->
+            with(recycle) {
+                layoutManager = LinearLayoutManager(context)
+                adapter = MyItemRecyclerViewAdapter(list, listener, R.layout.bookmark_item)
+            }
+        })
 
         return v
     }

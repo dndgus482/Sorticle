@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -19,12 +20,8 @@ import kotlinx.android.synthetic.main.history_item_list.view.*
 class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
 
     private lateinit var listener: OnListFragmentInteractionListener
-    private val db : AppDatabase by lazy {
-        Room.databaseBuilder(
-            requireActivity(),
-            AppDatabase::class.java, "database-name"
-        ).allowMainThreadQueries().fallbackToDestructiveMigration()
-            .build()
+    private val db: AppDatabase by lazy {
+        AppDatabase.getInstance(requireContext())!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +37,14 @@ class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
         v.recyclerview.showShimmerAdapter()
 
         listener = this
-        val list = db.historyDao().getAll()
-
         val recycle = v.recyclerview as RecyclerView
-        with(recycle) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = MyItemRecyclerViewAdapter(list, listener, R.layout.history_item)
-        }
+
+        db.historyDao().getAll().observe(this, Observer { list ->
+            with(recycle) {
+                layoutManager = LinearLayoutManager(context)
+                adapter = MyItemRecyclerViewAdapter(list, listener, R.layout.history_item)
+            }
+        })
 
         return v
     }
@@ -56,6 +54,5 @@ class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
         intent.putExtra("id", id);
         startActivity(intent)
     }
-
 
 }
