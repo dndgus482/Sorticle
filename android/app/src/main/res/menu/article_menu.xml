@@ -6,6 +6,7 @@
         android:icon="@drawable/ic_bookmark_black_24dp"
         android:orderInCategory="10"
         android:title="@string/bookmark"
+        android:checkable="true"
         app:showAsAction="ifRoom" />
 
 </menu>
