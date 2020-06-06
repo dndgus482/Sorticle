@@ -12,6 +12,7 @@ import androidx.room.Room
 import com.example.android.R
 import com.example.android.model.AppDatabase
 import com.example.android.model.ArticlePreview
+import com.example.android.model.History
 import kotlinx.android.synthetic.main.activity_article.*
 
 
@@ -49,8 +50,12 @@ class ArticleActivity : AppCompatActivity() {
         ).allowMainThreadQueries()
             .build()
 
-        db.articleDao().insertAll(article)
 
+        db.runInTransaction {
+            db.articleDao().insertAll(article)
+            db.historyDao().insertAll(History(article.Unnamed))
+            db.historyDao().deleteOld()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

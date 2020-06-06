@@ -11,7 +11,6 @@ import com.example.android.interfaces.OnListFragmentInteractionListener
 import com.example.android.model.ArticlePreview
 import kotlinx.android.synthetic.main.history_item.view.*
 
-import kotlinx.android.synthetic.main.news_item.view.*
 import kotlinx.android.synthetic.main.news_item.view.article_title
 
 class MyItemRecyclerViewAdapter(
@@ -39,7 +38,7 @@ class MyItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mList[position]
         holder.title.text = item.title
-        holder.pubDate.text = item.years
+        holder.year.text = item.years
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -50,6 +49,6 @@ class MyItemRecyclerViewAdapter(
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val title: TextView = mView.article_title
-        val pubDate: TextView = mView.article_year
+        val year: TextView = mView.article_year
     }
 }

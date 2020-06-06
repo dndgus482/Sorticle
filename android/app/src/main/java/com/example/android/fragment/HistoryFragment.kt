@@ -45,7 +45,7 @@ class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
             .build()
 
         listener = this
-        val list = db.articleDao().getAll()
+        val list = db.historyDao().getAll()
 
         val recycle = v.history_recyclerview as RecyclerView
         with(recycle) {
