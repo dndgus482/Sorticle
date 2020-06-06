@@ -2,16 +2,14 @@ package com.example.android.activity
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.room.Database
+import androidx.core.app.ShareCompat
 import androidx.room.Room
 import com.example.android.R
 import com.example.android.model.AppDatabase
@@ -39,6 +37,7 @@ class ArticleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_article)
         setSupportActionBar(toolbar)
+        title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
         if (Build.VERSION.SDK_INT >= 21) {
@@ -90,12 +89,20 @@ class ArticleActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.article_action_share -> {
+                ShareCompat.IntentBuilder.from(this)
+                    .setType("text/plain")
+                    .setChooserTitle("Share URL")
+                    .setText(article.link)
+                    .startChooser();
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-
         val bookmarked = db.bookmarkDao().findById(article.Unnamed)
         if(bookmarked == null) {
             menu?.getItem(0)?.isChecked = false
@@ -106,6 +113,23 @@ class ArticleActivity : AppCompatActivity() {
 
         return super.onPrepareOptionsMenu(menu)
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_BACK -> {
+                    if (article_webview.canGoBack()) {
+                        article_webview.goBack()
+                    } else {
+                        finish()
+                    }
+                    return true
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
 
     private fun addBookmark() {
         db.runInTransaction {

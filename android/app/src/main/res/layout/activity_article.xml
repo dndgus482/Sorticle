@@ -13,7 +13,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white" />
+            android:paddingRight="5dp"
+            android:background="@android:color/white"
+            android:paddingEnd="5dp"
+            tools:ignore="RtlSymmetry" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
