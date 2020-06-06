@@ -21,18 +21,18 @@
         android:contentDescription="Expand" />
 
 
-        <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
-            app:shimmer_demo_child_count="10"
-            app:shimmer_demo_layout_manager_type="linear_vertical"
-            app:shimmer_demo_layout="@layout/fragment_item_shimmer"
+    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:shimmer_demo_child_count="10"
+        app:shimmer_demo_layout="@layout/news_item_shimmer"
 
-            tools:listitem="@layout/fragment_item_list">
+        app:shimmer_demo_layout_manager_type="linear_vertical"
+        tools:listitem="@layout/news_item_list">
 
-        </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
+    </com.cooltechworks.views.shimmer.ShimmerRecyclerView>
 </LinearLayout>

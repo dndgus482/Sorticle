@@ -14,7 +14,7 @@
         android:title="@string/bookmark"/>
 
     <item
-        android:id="@+id/action_setting"
+        android:id="@+id/action_history"
         android:enabled="true"
         android:icon="@drawable/ic_history_black_24dp"
         android:title="@string/history"/>

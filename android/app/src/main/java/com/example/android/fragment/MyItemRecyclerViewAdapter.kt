@@ -5,57 +5,50 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.android.R
-import com.example.android.activity.OnListFragmentInteractionListener
+import com.example.android.interfaces.OnListFragmentInteractionListener
 
 
 import com.example.android.model.ArticlePreview
+import kotlinx.android.synthetic.main.history_item.view.*
 
-import kotlinx.android.synthetic.main.fragment_item.view.*
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlinx.android.synthetic.main.news_item.view.article_title
 
 class MyItemRecyclerViewAdapter(
-    private val mValues: List<ArticlePreview.Item>,
-    private val mListener: OnListFragmentInteractionListener?
+    private val mList: List<ArticlePreview>,
+    private val mListener: OnListFragmentInteractionListener,
+    private val mLayout : Int
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    var today = Date();
-    val fmt = SimpleDateFormat("yyyy-MM-dd")
-    val fmtToday = SimpleDateFormat("HH-mm")
 
     init {
-        mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as ArticlePreview.Item
-            mListener?.onListFragmentInteraction(item.id)
+        mOnClickListener = View.OnClickListener {
+            val item = it.tag as ArticlePreview
+            mListener.onListFragmentInteraction(item)
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_item, parent, false)
-        today = Date()
+            .inflate(mLayout, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
-        holder.title.text = item.title
-        if (fmt.format(item.pubDate) == fmt.format(today))
-            holder.pubDate.text = fmtToday.format(item.pubDate)
-        else
-            holder.pubDate.text = fmt.format(item.pubDate)
 
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = mList[position]
+        holder.title.text = item.title
+        holder.year.text = item.years
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = mList.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val title: TextView = mView.article_list_title
-        val pubDate: TextView = mView.article_list_pubDate
+        val title: TextView = mView.article_title
+        val year: TextView = mView.article_year
     }
 }
