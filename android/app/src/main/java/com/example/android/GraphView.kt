@@ -66,7 +66,7 @@ class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, a
 
 
     init {
-        setBackgroundColor(Color.WHITE)
+        setBackgroundColor(Color.rgb(244, 244, 244))
 
         // GestureDetector
         gestureDetector = GestureDetector(context, object : SimpleOnGestureListener() {

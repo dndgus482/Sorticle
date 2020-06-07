@@ -16,4 +16,7 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
+    <style name="WhiteRec">
+        <item name="android:background">@drawable/rectangle_sheet</item>
+    </style>
 </resources>

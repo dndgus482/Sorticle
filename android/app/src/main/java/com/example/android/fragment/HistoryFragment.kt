@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.android.activity.ArticleActivity
 import com.example.android.interfaces.OnListFragmentInteractionListener
 import com.example.android.model.AppDatabase
 import com.example.android.model.ArticlePreview
+import kotlinx.android.synthetic.main.activity_article.*
 import kotlinx.android.synthetic.main.history_item_list.view.*
 
 class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
@@ -22,6 +24,12 @@ class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
     private lateinit var listener: OnListFragmentInteractionListener
     private val db: AppDatabase by lazy {
         AppDatabase.getInstance(requireContext())!!
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        (activity as AppCompatActivity).title = "History"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,5 +62,6 @@ class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
         intent.putExtra("id", id);
         startActivity(intent)
     }
+
 
 }

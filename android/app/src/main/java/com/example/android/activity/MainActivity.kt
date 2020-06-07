@@ -1,6 +1,7 @@
 package com.example.android.activity
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android.R
 import com.example.android.fragment.BookmarkFragment
@@ -63,5 +64,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.empty_menu, menu)
+        return true
+    }
 
 }
