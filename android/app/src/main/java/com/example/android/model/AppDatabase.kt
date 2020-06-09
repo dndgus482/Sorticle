@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ArticlePreview::class, History::class, Bookmark::class], version = 5)
+@Database(entities = [ArticlePreview::class, History::class, Bookmark::class], version = 6)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
     abstract fun historyDao(): HistoryDao
@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
                 instance = Room.databaseBuilder(
                     context,
                     AppDatabase::class.java, "database-name"
-                ).allowMainThreadQueries()
+                ).allowMainThreadQueries().fallbackToDestructiveMigration()
                     .build()
             }
             return instance

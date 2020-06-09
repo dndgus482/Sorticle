@@ -3,9 +3,7 @@ package com.example.android.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.google.firebase.database.IgnoreExtraProperties
 
-@IgnoreExtraProperties
 @Entity(
     foreignKeys = [ForeignKey(
         entity = ArticlePreview::class,

@@ -2,7 +2,6 @@ package com.example.android.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.android.R
 import com.example.android.activity.ArticleActivity
+import com.example.android.interfaces.BigItemRecyclerViewAdapter
 import com.example.android.interfaces.OnListFragmentInteractionListener
 import com.example.android.model.AppDatabase
 import com.example.android.model.ArticlePreview
@@ -34,10 +33,6 @@ class BookmarkFragment : Fragment(), OnListFragmentInteractionListener {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,11 +44,16 @@ class BookmarkFragment : Fragment(), OnListFragmentInteractionListener {
         listener = this
         val recycle = v.recyclerview as RecyclerView
 
-//        val list = db.bookmarkDao().getAll()
-        db.bookmarkDao().getAll().observe(this, Observer {list ->
+        db.bookmarkDao().getAll().observe(this, Observer { list ->
             with(recycle) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = MyItemRecyclerViewAdapter(list, listener, R.layout.bookmark_item)
+                adapter =
+                    BigItemRecyclerViewAdapter(
+                        list,
+                        listener,
+                        R.layout.bookmark_item,
+                        requireActivity()
+                    )
             }
         })
 
@@ -65,7 +65,6 @@ class BookmarkFragment : Fragment(), OnListFragmentInteractionListener {
         intent.putExtra("id", id);
         startActivity(intent)
     }
-
 
 
 }

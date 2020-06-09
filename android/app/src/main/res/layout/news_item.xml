@@ -3,9 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:id="@+id/cv"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_margin="0.5dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:focusable="true">
 
 
     <RelativeLayout
@@ -14,16 +17,29 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="1dp"
         android:background="#fff"
-        android:padding="16dp">
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="3dp">
 
         <TextView
             android:id="@+id/article_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+
             android:ellipsize="end"
-            android:maxLines="1"
+            android:fontFamily="@font/nanumsquareroundb"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="3dp"
+            android:lines="2"
+            android:maxLines="2"
             android:text=""
-            tools:text="dfsdfsdfsdf" />
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            tools:text="대한민국 대한민국 대한민국 대한민국 대한민국 대대한민국 대한민국 대한민국 대한민국 대한민국 대한 대한민국 한 대한민국 대한민국 대한민국 대한민국 대한민국 대한민국 대대한민국 대한민국 대한민국 대한민국 대한민국 대한 대한민국 한 대한민국 " />
 
         <TextView
             android:id="@+id/article_year"
@@ -31,9 +47,22 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/article_title"
             android:text=""
+            android:textSize="12sp"
             tools:text="2017-09-26" />
 
     </RelativeLayout>
 
+
+    <TextView
+        android:id="@+id/article_category"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
+
+    <TextView
+        android:id="@+id/article_company"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
 </androidx.cardview.widget.CardView>
 

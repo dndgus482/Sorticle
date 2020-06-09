@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.android.R
 import com.example.android.activity.ArticleActivity
+import com.example.android.interfaces.BigItemRecyclerViewAdapter
 import com.example.android.interfaces.OnListFragmentInteractionListener
 import com.example.android.model.AppDatabase
 import com.example.android.model.ArticlePreview
@@ -32,10 +32,6 @@ class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
         (activity as AppCompatActivity).title = "History"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,18 +46,24 @@ class HistoryFragment : Fragment(), OnListFragmentInteractionListener {
         db.historyDao().getAll().observe(this, Observer { list ->
             with(recycle) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = MyItemRecyclerViewAdapter(list, listener, R.layout.history_item)
+                adapter =
+                    BigItemRecyclerViewAdapter(
+                        list,
+                        listener,
+                        R.layout.history_item,
+                        requireActivity()
+                    )
             }
         })
-
+        
         return v
     }
+
 
     override fun onListFragmentInteraction(id: ArticlePreview) {
         val intent = Intent(activity, ArticleActivity::class.java)
         intent.putExtra("id", id);
         startActivity(intent)
     }
-
 
 }

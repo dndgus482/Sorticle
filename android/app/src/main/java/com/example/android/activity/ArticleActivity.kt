@@ -1,22 +1,19 @@
 package com.example.android.activity
 
-import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
-import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ShareCompat
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.room.Room
+import com.example.android.BookmarkService
 import com.example.android.R
 import com.example.android.model.AppDatabase
 import com.example.android.model.ArticlePreview
 import com.example.android.model.Bookmark
 import com.example.android.model.History
+import com.example.android.share
 import kotlinx.android.synthetic.main.activity_article.*
 
 
@@ -37,11 +34,6 @@ class ArticleActivity : AppCompatActivity() {
         title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            article_webview.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
-        }
-        article_webview.settings.domStorageEnabled = true;
-        article_webview.settings.useWideViewPort = true;
         article_webview.settings.setAppCacheEnabled(true);
         article_webview.settings.loadsImagesAutomatically = true;
         article_webview.settings.javaScriptEnabled = true;
@@ -74,24 +66,18 @@ class ArticleActivity : AppCompatActivity() {
 
             R.id.article_action_bookmark -> {
                 item.isChecked = !item.isChecked
-
                 if (item.isChecked) {
                     item.setIcon(R.drawable.ic_bookmark_pink_24dp)
-                    addBookmark()
+                    BookmarkService.add(db, article)
                 } else {
                     item.setIcon(R.drawable.ic_bookmark_black_24dp)
-                    deleteBookmark()
+                    BookmarkService.delete(db, article)
                 }
-
                 true
             }
 
             R.id.article_action_share -> {
-                ShareCompat.IntentBuilder.from(this)
-                    .setType("text/plain")
-                    .setChooserTitle("Share URL")
-                    .setText(article.link)
-                    .startChooser();
+                share(this, article.link)
                 true
             }
 
@@ -100,7 +86,7 @@ class ArticleActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val bookmarked = db.bookmarkDao().findById(article.Unnamed)
+        val bookmarked :Bookmark? = db.bookmarkDao().findById(article.Unnamed)
         if(bookmarked == null) {
             menu?.getItem(0)?.isChecked = false
         } else {
@@ -125,20 +111,6 @@ class ArticleActivity : AppCompatActivity() {
             }
         }
         return super.onKeyDown(keyCode, event)
-    }
-
-
-    private fun addBookmark() {
-        db.runInTransaction {
-            db.articleDao().insertAll(article)
-            db.bookmarkDao().insertAll(Bookmark(article.Unnamed))
-        }
-    }
-
-    private fun deleteBookmark() {
-        db.runInTransaction {
-            db.bookmarkDao().delete(Bookmark(article.Unnamed))
-        }
     }
 
 }

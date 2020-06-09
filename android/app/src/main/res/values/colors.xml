@@ -6,4 +6,5 @@
     <color name="listWhite">#cccccc</color>
     <color name="transNavy">#99000C2B</color>
     <color name="demo_dark_transparent">#12000000</color>
+    <color name="background_white">#f4f4f4</color>
 </resources>

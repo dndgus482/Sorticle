@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                     .hide(historyFragment!!).commit()
                 if (bookmarkFragment != null) supportFragmentManager.beginTransaction()
                     .show(bookmarkFragment!!).commit()
+
                 return@setOnNavigationItemSelectedListener true
 
             } else if (it.itemId == R.id.action_history) {

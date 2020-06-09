@@ -14,7 +14,7 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class GraphItem(val name: String, val children: ArrayList<GraphItem>?) {
+class GraphItem(val name: String, var children: ArrayList<GraphItem>?) {
     var parent: GraphItem? = null
 }
 
@@ -78,9 +78,7 @@ class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, a
                     // 아이템을 눌렀다
                     if(isInCircle(e.x, e.y, itemRectList[i])) {
                         actionListener?.onTopicClicked(targetList[i])
-                        actionListener?.onFocusingTopicChanged(currentItem, targetList[i])
                         currentItem = targetList[i]
-                        updateLayout()
                         return true
                     }
                 }
@@ -121,7 +119,7 @@ class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, a
     }
 
 
-    private fun updateLayout() {
+    fun updateLayout() {
 
         // 화면에 표시할 리스트
         val targetList = (if(currentItem == null) itemList else currentItem?.children)
