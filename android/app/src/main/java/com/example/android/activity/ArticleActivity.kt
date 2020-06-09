@@ -1,11 +1,15 @@
 package com.example.android.activity
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android.BookmarkService
 import com.example.android.R
@@ -34,9 +38,24 @@ class ArticleActivity : AppCompatActivity() {
         title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
+        progress_bar.visibility = View.VISIBLE
         article_webview.settings.setAppCacheEnabled(true);
         article_webview.settings.loadsImagesAutomatically = true;
         article_webview.settings.javaScriptEnabled = true;
+
+
+        article_webview.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView, progress: Int) {
+                if (progress < 100 && progress_bar.visibility == ProgressBar.GONE) {
+                    progress_bar.visibility = ProgressBar.VISIBLE
+                }
+                progress_bar.progress = progress
+                if (progress == 100) {
+                    progress_bar.visibility = ProgressBar.GONE
+                }
+            }
+
+        }
 
         article_webview.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {

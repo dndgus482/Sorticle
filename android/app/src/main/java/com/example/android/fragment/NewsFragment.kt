@@ -127,27 +127,37 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
     }
 
     private fun update() {
+        v.graph_view.visibility = View.GONE
+        v.progress_bar.visibility = View.VISIBLE
 
         ref = dbF.collection("category2").document("sub")
 
         ref.get().addOnSuccessListener {
+
             val list = it.get("category") as List<*>
             val itemList = ArrayList<GraphItem>()
             list.forEach { item ->
                 itemList.add(GraphItem(item as String, null))
             }
             v.graph_view.itemList = itemList
+            v.progress_bar.visibility = View.GONE
+            v.graph_view.visibility = View.VISIBLE
+
         }
     }
 
 
     private fun getNewCategory(parent: GraphItem) {
+        v.graph_view.visibility = View.GONE
+        v.progress_bar.visibility = View.VISIBLE
+
         var newRef = ref
         path.forEach { cur ->
             newRef = newRef.collection(cur).document("sub")
         }
 
         newRef.get().addOnSuccessListener {
+
             val list = it.get("category") as List<*>?
             val itemList = ArrayList<GraphItem>()
             list?.forEach { item ->
@@ -156,7 +166,10 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
                 itemList.add(i)
             }
             parent.children = itemList
-            graph_view.updateLayout()
+            v.graph_view.updateLayout()
+            v.progress_bar.visibility = View.GONE
+            v.graph_view.visibility = View.VISIBLE
+
         }
     }
 
