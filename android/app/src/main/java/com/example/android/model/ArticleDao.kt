@@ -7,10 +7,10 @@ abstract class ArticleDao() {
     @Query("SELECT * FROM ArticlePreview")
     abstract fun getAll(): List<ArticlePreview>
 
-    @Query("SELECT * FROM ArticlePreview WHERE unnamed IN (:ids)")
+    @Query("SELECT * FROM ArticlePreview WHERE id IN (:ids)")
     abstract fun loadAllByIds(ids: IntArray): List<ArticlePreview>
 
-    @Query("SELECT * FROM ArticlePreview WHERE unnamed IN (:id)")
+    @Query("SELECT * FROM ArticlePreview WHERE id IN (:id)")
     abstract fun findByName(id: Int): ArticlePreview
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

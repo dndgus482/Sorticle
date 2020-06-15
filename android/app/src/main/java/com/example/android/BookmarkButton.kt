@@ -9,15 +9,15 @@ import kotlin.properties.Delegates
 class BookmarkButton(context: Context, attrs: AttributeSet) :
     androidx.appcompat.widget.AppCompatImageButton(context, attrs) {
 
-    var checkTrueListner : (() -> Unit)? = null
-    var checkFalseListner : (() -> Unit)? = null
+    var checkTrueListener : (() -> Unit)? = null
+    var checkFalseListener : (() -> Unit)? = null
 
     var checked: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
         background = if (newValue) {
-            checkTrueListner?.invoke()
+            checkTrueListener?.invoke()
             ResourcesCompat.getDrawable(resources, R.drawable.ic_bookmark_pink_24dp, null)
         } else {
-            checkFalseListner?.invoke()
+            checkFalseListener?.invoke()
             ResourcesCompat.getDrawable(resources, R.drawable.ic_bookmark_black_24dp, null)
         }
     }

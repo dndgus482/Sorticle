@@ -5,15 +5,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
-import com.example.android.BookmarkButton
-import com.example.android.BookmarkService
 import com.example.android.model.AppDatabase
 
 
 import com.example.android.model.ArticlePreview
-import com.example.android.share
 import kotlinx.android.synthetic.main.history_item.view.*
 
 import kotlinx.android.synthetic.main.news_item.view.article_title
@@ -44,7 +40,7 @@ class SmallItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mList[position]
         holder.title.text = item.title
-        holder.year.text = item.years
+        holder.year.text = item.year
 
         with(holder.mView) {
             tag = item

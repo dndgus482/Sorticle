@@ -6,10 +6,11 @@ import java.io.Serializable
 
 @Entity
 data class ArticlePreview(
-    @PrimaryKey val Unnamed : Int = 0,
+    @PrimaryKey var id : Int = 0,
+    val index : String = "",
     val company : String = "",
     val link : String = "",
     val title : String = "",
-    val years : String ="",
+    val year : String ="",
     var path : String = ""
 ) : Serializable

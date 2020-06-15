@@ -1,6 +1,5 @@
 package com.example.android.activity
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
@@ -66,7 +65,7 @@ class ArticleActivity : AppCompatActivity() {
 
         db.runInTransaction {
             db.articleDao().insertAll(article)
-            db.historyDao().insertAll(History(article.Unnamed))
+            db.historyDao().insertAll(History(article.id))
             db.historyDao().deleteOld()
         }
     }
@@ -105,7 +104,7 @@ class ArticleActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        val bookmarked :Bookmark? = db.bookmarkDao().findById(article.Unnamed)
+        val bookmarked :Bookmark? = db.bookmarkDao().findById(article.id)
         if(bookmarked == null) {
             menu?.getItem(0)?.isChecked = false
         } else {

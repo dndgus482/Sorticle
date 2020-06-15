@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 abstract class HistoryDao() {
     @Query(
-        "SELECT ArticlePreview.* FROM ArticlePreview INNER JOIN History ON unnamed = id ORDER BY createdAt DESC"
+        "SELECT ArticlePreview.* FROM ArticlePreview INNER JOIN History ON ArticlePreview.id = History.id ORDER BY createdAt DESC"
     )
     abstract fun getAll(): LiveData<List<ArticlePreview>>
 

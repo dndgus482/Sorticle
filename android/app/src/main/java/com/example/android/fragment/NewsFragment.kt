@@ -71,6 +71,11 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
                     return
                 }
                 path.removeAt(path.size - 1)
+                if (path.isEmpty()) {
+                    behavior.state = BottomSheetBehavior.STATE_HIDDEN
+                    return
+                }
+
                 getList()
             }
         }
@@ -107,7 +112,6 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
                 }
             }
         })
-
         v.button_expand.setOnClickListener {
             when (behavior.state) {
                 BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -121,6 +125,7 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
 
             }
         }
+
         behavior.state = BottomSheetBehavior.STATE_HIDDEN
         v.recyclerView.setDemoShimmerDuration(0)
 
@@ -130,7 +135,7 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
         v.graph_view.visibility = View.GONE
         v.progress_bar.visibility = View.VISIBLE
 
-        ref = dbF.collection("category2").document("sub")
+        ref = dbF.collection("category").document("sub")
 
         ref.get().addOnSuccessListener {
 
@@ -178,18 +183,18 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         val recycle = recyclerView as RecyclerView
-        val ref = dbF.collection("news2")
+        val ref = dbF.collection("news")
 
         var q: Query? = null
         var task: Task<QuerySnapshot>? = null
 
         if (path.isNotEmpty()) {
-            q = ref.whereEqualTo("category.${path[0]}", true)
+            q = ref.whereEqualTo("search", path[0]);
             for (i in 1 until path.size) {
-                val str = path[i]
                 q = q?.whereEqualTo("category.${path[i]}", true)
             }
             task = q?.get()
+
         } else {
             task = ref.get()
         }
@@ -198,8 +203,10 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
         task?.addOnSuccessListener {
             for (document in it) {
                 val i = document.toObject(ArticlePreview::class.java)
-                if(path.isNotEmpty())
+                if(path.isNotEmpty()) {
                     i.path = path[0]
+                    i.id = i.index.toInt()
+                }
                 list.add(i)
             }
             with(recycle) {

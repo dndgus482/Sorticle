@@ -29,7 +29,7 @@
             android:layout_marginBottom="5dp"
 
             android:ellipsize="end"
-            android:fontFamily="@font/nanumsquareroundb"
+            android:fontFamily="@font/nanumr"
             android:gravity="center_vertical"
             android:lineSpacingExtra="3dp"
             android:lines="2"

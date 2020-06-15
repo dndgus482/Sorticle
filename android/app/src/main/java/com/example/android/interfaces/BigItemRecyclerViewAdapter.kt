@@ -44,15 +44,15 @@ class BigItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mList[position]
         holder.title.text = item.title
-        holder.year.text = item.years
+        holder.year.text = item.year
         holder.category.text = item.path
         holder.company.text = item.company
 
         BookmarkService.init(db, item, holder.bookmark)
-        holder.bookmark.checkTrueListner = {
+        holder.bookmark.checkTrueListener = {
             BookmarkService.add(db, item)
         }
-        holder.bookmark.checkFalseListner = {
+        holder.bookmark.checkFalseListener = {
             BookmarkService.delete(db, item)
         }
 

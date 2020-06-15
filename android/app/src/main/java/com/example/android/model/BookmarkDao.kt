@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 abstract class BookmarkDao() {
     @Query(
-        "SELECT ArticlePreview.* FROM ArticlePreview INNER JOIN Bookmark ON unnamed = id ORDER BY createdAt DESC"
+        "SELECT ArticlePreview.* FROM ArticlePreview INNER JOIN Bookmark ON ArticlePreview.id = Bookmark.id ORDER BY createdAt DESC"
     )
     abstract fun getAll(): LiveData<List<ArticlePreview>>
 

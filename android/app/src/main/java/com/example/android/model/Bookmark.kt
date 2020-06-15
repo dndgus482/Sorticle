@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(
     foreignKeys = [ForeignKey(
         entity = ArticlePreview::class,
-        parentColumns = arrayOf("Unnamed"),
+        parentColumns = arrayOf("id"),
         childColumns = arrayOf("id")
     )]
 )
