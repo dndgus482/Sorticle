@@ -50,19 +50,21 @@
             android:textSize="12sp"
             tools:text="2017-09-26" />
 
+        <TextView
+            android:id="@+id/article_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/article_title"
+            android:layout_toRightOf="@+id/article_year"
+            android:layout_marginLeft="5dp"
+            android:textSize="12sp"
+            android:visibility="visible"
+            tools:text="연합뉴스"
+            android:layout_toEndOf="@+id/article_year"
+            android:layout_marginStart="5dp" />
+
     </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/article_category"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
-
-    <TextView
-        android:id="@+id/article_company"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
 </androidx.cardview.widget.CardView>
 

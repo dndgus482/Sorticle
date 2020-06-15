@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ArticlePreview::class, History::class, Bookmark::class], version = 9)
+@Database(entities = [ArticlePreview::class, History::class, Bookmark::class], version = 10)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
     abstract fun historyDao(): HistoryDao

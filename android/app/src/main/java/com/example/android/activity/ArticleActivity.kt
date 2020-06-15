@@ -65,7 +65,7 @@ class ArticleActivity : AppCompatActivity() {
 
         db.runInTransaction {
             db.articleDao().insertAll(article)
-            db.historyDao().insertAll(History(article.id))
+            db.historyDao().insertWithTimestamp(History(article.id))
             db.historyDao().deleteOld()
         }
     }

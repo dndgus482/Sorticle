@@ -32,6 +32,7 @@ abstract class HistoryDao() {
         histories.forEach {
             it.createdAt = System.currentTimeMillis()
         }
+        insertAll(*histories)
     }
 
     @Delete

@@ -41,7 +41,7 @@ class SmallItemRecyclerViewAdapter(
         val item = mList[position]
         holder.title.text = item.title
         holder.year.text = item.year
-
+        holder.company.text = item.company
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -53,5 +53,6 @@ class SmallItemRecyclerViewAdapter(
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val title: TextView = mView.article_title
         val year: TextView = mView.article_year
+        val company : TextView = mView.article_company
     }
 }

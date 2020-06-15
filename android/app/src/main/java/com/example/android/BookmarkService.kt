@@ -15,7 +15,7 @@ class BookmarkService {
         fun add(db : AppDatabase, article : ArticlePreview) {
             db.runInTransaction {
                 db.articleDao().insertAll(article)
-                db.bookmarkDao().insertAll(Bookmark(article.id))
+                db.bookmarkDao().insertWithTimestamp(Bookmark(article.id))
             }
         }
 

@@ -24,6 +24,7 @@ abstract class BookmarkDao() {
         bookmarks.forEach {
             it.createdAt = System.currentTimeMillis()
         }
+        insertAll(*bookmarks)
     }
 
     @Delete

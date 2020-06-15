@@ -2,12 +2,13 @@ package com.example.android.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.GraphItem
@@ -19,15 +20,13 @@ import com.example.android.interfaces.SmallItemRecyclerViewAdapter
 import com.example.android.model.ArticlePreview
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
-import kotlinx.android.synthetic.main.news_item_list.*
-import kotlinx.android.synthetic.main.news_item_list.view.*
+import com.google.firebase.firestore.*
+import com.google.firestore.v1.Document
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.fragment_news.view.*
-import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.news_item_list.*
+import kotlinx.android.synthetic.main.news_item_list.view.*
+
 
 class NewsFragment : Fragment(), OnListFragmentInteractionListener {
     private val upHeight: Int by lazy {
@@ -45,6 +44,8 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
     private lateinit var v: View
     private lateinit var ref: DocumentReference
     private val path = ArrayList<String>()
+    private var isLoading = false
+    private val list =  ArrayList<ArticlePreview>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +54,25 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
         v = inflater.inflate(R.layout.fragment_news, container, false)
         graphLayoutInit()
         bottomSheetInit()
-        return v
+
+        v.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val linearLayoutManager =
+                    v.recyclerView.layoutManager as LinearLayoutManager?
+
+                if (!isLoading) {
+                    if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == list.size - 1) {
+                        dataMore()
+                        isLoading = true
+                    }
+                }
+
+            }
+        })
+
+
+            return v
     }
 
 
@@ -193,13 +212,14 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
             for (i in 1 until path.size) {
                 q = q?.whereEqualTo("category.${path[i]}", true)
             }
+            q = q?.limit(20)
             task = q?.get()
 
         } else {
             task = ref.get()
         }
 
-        val list = ArrayList<ArticlePreview>()
+        list.clear()
         task?.addOnSuccessListener {
             for (document in it) {
                 val i = document.toObject(ArticlePreview::class.java)
@@ -220,6 +240,45 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
                     )
             }
         }
+    }
+
+    private fun dataMore() {
+//        v.recyclerView.showShimmerAdapter()
+
+        val recycle = recyclerView as RecyclerView
+        val ref = dbF.collection("news")
+
+        var q: Query? = null
+        var task: Task<QuerySnapshot>? = null
+
+        if (path.isNotEmpty()) {
+            q = ref.whereEqualTo("search", path[0]);
+            for (i in 1 until path.size) {
+                q = q?.whereEqualTo("category.${path[i]}", true)
+            }
+            q = q?.limit(list.size.toLong() + 20)
+            task = q?.get()
+
+        } else {
+            task = ref.get()
+        }
+
+        task?.addOnSuccessListener {
+            val size = list.size
+            val min = if(it.size() > size + 20) size + 20 else it.size()
+            for (k in size until min) {
+                val i = it.elementAt(k).toObject(ArticlePreview::class.java)
+                if(path.isNotEmpty()) {
+                    i.path = path[0]
+                    i.id = i.index.toInt()
+                }
+                list.add(i)
+            }
+            recycle.adapter?.notifyDataSetChanged();
+            isLoading = false
+        }
+
+
     }
 
     override fun onListFragmentInteraction(id: ArticlePreview) {
