@@ -78,13 +78,15 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
 
     private fun graphLayoutInit() {
         v.graph_view.actionListener = object : GraphView.GraphViewActionListener {
-            override fun onTopicClicked(item: GraphItem) {
+
+
+            override fun onSubTopic(item: GraphItem) {
                 path.add(item.name)
                 getNewCategory(item)
                 getList()
             }
 
-            override fun onFocusingTopicChanged(before: GraphItem?, after: GraphItem?) {
+            override fun onParentTopic(before: GraphItem?, after: GraphItem?) {
                 if (path.isEmpty()) {
                     behavior.state = BottomSheetBehavior.STATE_HIDDEN
                     return
@@ -97,6 +99,11 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
 
                 getList()
             }
+
+            override fun onSelectedTopicChanged(itemList: ArrayList<GraphItem>) {
+                //TODO("Not yet implemented")
+            }
+
         }
 
         update()

@@ -23,8 +23,9 @@ class GraphItem(val name: String, var children: ArrayList<GraphItem>?) {
 class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
     interface GraphViewActionListener {
-        fun onTopicClicked(item: GraphItem)
-        fun onFocusingTopicChanged(before: GraphItem?, after: GraphItem?)
+        fun onSubTopic(item: GraphItem)
+        fun onParentTopic(before: GraphItem?, after: GraphItem?)
+        fun onSelectedTopicChanged(itemList: ArrayList<GraphItem>)
     }
 
 
@@ -39,6 +40,7 @@ class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, a
             updateLayout()
         }
     private var currentItem: GraphItem? = null // null일 경우 itemList를 그대로 사용, 아닐 경우 해당 item의 children을 사용
+    private var selectedItemList = ArrayList<GraphItem>()
 
     // 터치 관련
     private var gestureDetector: GestureDetector
@@ -59,6 +61,7 @@ class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, a
     private val marginIn = context.resources.displayMetrics.density * 10
     private val maxItemSize = context.resources.displayMetrics.density * 100
     private val noticeTextSize = context.resources.displayMetrics.density * 20
+    private val selectedItemInset = context.resources.displayMetrics.density * 5
     private val baseRect = RectF()
     private val itemRectList: ArrayList<RectF> = ArrayList()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -77,14 +80,28 @@ class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, a
                 for(i in 0 until itemRectList.size) {
                     // 아이템을 눌렀다
                     if(isInCircle(e.x, e.y, itemRectList[i])) {
-                        actionListener?.onTopicClicked(targetList[i])
-                        currentItem = targetList[i]
+                        if(selectedItemList.contains(targetList[i]) || currentItem == null) {
+                            actionListener?.onSubTopic(targetList[i])
+                            currentItem = targetList[i]
+                            selectedItemList.clear()
+                            actionListener?.onSelectedTopicChanged(selectedItemList)
+                        } else {
+                            selectedItemList.add(targetList[i])
+                            actionListener?.onSelectedTopicChanged(selectedItemList)
+                        }
+                        updateLayout()
                         return true
                     }
                 }
                 // 바깥 영역을 눌렀다
-                actionListener?.onFocusingTopicChanged(currentItem, currentItem?.parent)
-                currentItem = currentItem?.parent
+                if(selectedItemList.isNotEmpty()) {
+                    selectedItemList.clear()
+                    actionListener?.onSelectedTopicChanged(selectedItemList)
+                } else {
+                    actionListener?.onParentTopic(currentItem, currentItem?.parent)
+                    currentItem = currentItem?.parent
+                }
+
                 updateLayout()
                 return true
             }
@@ -278,6 +295,13 @@ class GraphView(context: Context, attrs: AttributeSet?) : FrameLayout(context, a
         for (i in 0 until itemRectList.size) {
             // 원 그리기
             paint.color = colorPalette[i % colorPalette.size]
+            if(selectedItemList.contains(targetList[i])) {
+                paint.alpha = 64
+                itemRectList[i].inset(-selectedItemInset, -selectedItemInset)
+                canvas.drawOval(itemRectList[i], paint)
+                itemRectList[i].inset(selectedItemInset, selectedItemInset)
+                paint.alpha = 255
+            }
             canvas.drawOval(itemRectList[i], paint)
 
             // 글자 그리기
