@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.Gravity
 import android.widget.Toast
 import androidx.core.app.ShareCompat
-import com.example.android.model.Article
 
 fun errorMessage(ctx: Context, msg: String)
 {

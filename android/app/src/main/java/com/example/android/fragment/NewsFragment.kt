@@ -46,6 +46,8 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
     private val path = ArrayList<String>()
     private var isLoading = false
     private val list =  ArrayList<ArticlePreview>()
+    private val subPath = ArrayList<String>()
+    private var subList = ArrayList<ArticlePreview>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,16 +65,15 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
 
                 if (!isLoading) {
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == list.size - 1) {
-                        dataMore()
                         isLoading = true
+                        dataMore()
                     }
                 }
 
             }
         })
 
-
-            return v
+        return v
     }
 
 
@@ -101,9 +102,20 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
             }
 
             override fun onSelectedTopicChanged(itemList: ArrayList<GraphItem>) {
-                //TODO("Not yet implemented")
-            }
+                subPath.clear()
+                if(itemList.size == 0) {
+                    showList(list)
+                    return
+                }
 
+                itemList.forEach { subPath.add(it.name) }
+                subList.clear()
+                list.forEach { article ->
+                    if(article.category.any {subPath.contains(it.key) })
+                        subList.add(article)
+                }
+                showList(subList)
+            }
         }
 
         update()
@@ -208,9 +220,7 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
         v.recyclerView.showShimmerAdapter()
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        val recycle = recyclerView as RecyclerView
         val ref = dbF.collection("news")
-
         var q: Query? = null
         var task: Task<QuerySnapshot>? = null
 
@@ -236,22 +246,11 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
                 }
                 list.add(i)
             }
-            with(recycle) {
-                layoutManager = LinearLayoutManager(context)
-                adapter =
-                    SmallItemRecyclerViewAdapter(
-                        list,
-                        listener,
-                        R.layout.news_item,
-                        requireActivity()
-                    )
-            }
+            showList(list)
         }
     }
 
     private fun dataMore() {
-//        v.recyclerView.showShimmerAdapter()
-
         val recycle = recyclerView as RecyclerView
         val ref = dbF.collection("news")
 
@@ -270,7 +269,7 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
             task = ref.get()
         }
 
-        task?.addOnSuccessListener {
+        task?.addOnSuccessListener { it ->
             val size = list.size
             val min = if(it.size() > size + 20) size + 20 else it.size()
             for (k in size until min) {
@@ -280,12 +279,28 @@ class NewsFragment : Fragment(), OnListFragmentInteractionListener {
                     i.id = i.index.toInt()
                 }
                 list.add(i)
+
+                if(i.category.any {article -> subPath.contains(article.key) })
+                    subList.add(i)
             }
             recycle.adapter?.notifyDataSetChanged();
             isLoading = false
         }
+    }
 
 
+    private fun showList(list : ArrayList<ArticlePreview>) {
+        list.sort()
+        with(v.recyclerView) {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            adapter =
+                com.example.android.interfaces.SmallItemRecyclerViewAdapter(
+                    list,
+                    listener,
+                    com.example.android.R.layout.news_item,
+                    requireActivity()
+                )
+        }
     }
 
     override fun onListFragmentInteraction(id: ArticlePreview) {
