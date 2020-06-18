@@ -2,21 +2,20 @@
 #pip install pandas
 #pip install requests
 #pip install openpyxl
-
+import shutil
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
 import sort
-RESULT_PATH="C:/Users/hablo/PycharmProjects/News/"
-txt_filename = "news.txt"
-now = datetime.now()
+import os
+import save
 
 
 def crawler(maxpage, query):
     page = 1
     maxpage_t = (int(maxpage) - 1) * 10 + 1  # 11= 2페이지 21=3페이지 31=4페이지 ...81=9페이지 , 91=10페이지, 101=11페이지
-    f = open(RESULT_PATH + query + txt_filename, 'w', encoding='cp949')
+    f = open(query + "news.txt", 'w', encoding='cp949')
 
     while page < maxpage_t:
         print(int(page/10 + 1),  '/',  maxpage)
@@ -51,7 +50,8 @@ def get_news(n_url):
     pdate = bsoup.select('.t11')[0].get_text()[:11]
     news_detail.append(pdate)
     _text = bsoup.select('#articleBodyContents')[0].get_text().replace('\n', " ")
-    btext = _text.replace("// flash 오류를 우회하기 위한 함수 추가 function _flash_removeCallback() {}", "")
+    _btext = _text.replace("// flash 오류를 우회하기 위한 함수 추가 function _flash_removeCallback() {}", "")
+    btext = _btext.replace("동영상 뉴스", "")
     news_detail.append(btext.strip())
     news_detail.append(n_url)
     pcompany = bsoup.select('#footer address')[0].a.get_text()
@@ -60,18 +60,25 @@ def get_news(n_url):
 
 
 def csv_make(query):
-    data = pd.read_csv(RESULT_PATH + query +txt_filename, sep='\t', header=None, error_bad_lines=False, encoding = 'cp949')
+    data = pd.read_csv(query + "news.txt", sep='\t', header=None, error_bad_lines=False, encoding = 'cp949')
     data.columns = ['years', 'company', 'title', 'contents', 'link']
-    print(data)
     csv_outputFileName = query + '.csv'
-    data.to_csv(RESULT_PATH + csv_outputFileName, encoding='cp949')
+    data.to_csv(csv_outputFileName, encoding='cp949', index_label = "index")
 
 def main():
     #maxpage = input("최대 검색할 페이지수 입력하시오: ")
-    maxpage = 10
+    maxpage = 20
     query = input("검색어 입력: ")
     crawler(maxpage, query)
     csv_make(query)
-    sort.sub_main(query)
+    currentPath = os.getcwd()
+    os.mkdir(currentPath + "/" + query)
+    os.chdir(currentPath + "/" + query)
+    sort.sort_main(query)
+    save.savedata(query)
+    os.chdir(currentPath)
+    shutil.rmtree(currentPath + "/" + query)
 
-main()
+
+if __name__=='__main__':
+    main()

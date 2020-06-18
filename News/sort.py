@@ -1,10 +1,12 @@
 import pandas as pd
+import save
 from pandas import DataFrame as df
 import MeCab
 import os
 import numpy as np
 import csv
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from matplotlib import pyplot as plt
 from nltk.corpus import stopwords
 
 from pandas import DataFrame
@@ -15,8 +17,8 @@ def getNVM_lemma(text):
     parsed = tokenizer.parse(text)
     word_tag = [w for w in parsed.split("\n")]
     pos = []
-    # NNP: 고유명사 / VA : 형용사 / VX: 보조 용언 / VCP : 긍정지정사 / VCN : 부정지정사 /  MAG :일반 부사
-    tags = ['NNG', 'NNP', 'VA', 'VX', 'VCP', 'VCN', 'MAG']
+    # NNP: 고유명사 / VV :동사 / VA : 형용사 / VX: 보조 용언 / VCP : 긍정지정사 / VCN : 부정지정사 /  MAG :일반 부사
+    tags = ['NNG', 'NNP', 'VV', 'VA', 'VX', 'VCP', 'VCN', 'MAG']
     for word_ in word_tag[:-2]:
         word = word_.split("\t")
         tag = word[1].split(",")
@@ -24,7 +26,7 @@ def getNVM_lemma(text):
             continue
         if tag[-1] != '*':
             t = tag[-1].split('/')
-            if len(t[0]) > 1 and ('VA' in t[1] or 'VX' in t[1]):
+            if len(t[0]) > 1 and ('VV' in t[1] or 'VA' in t[1] or 'VX' in t[1]):
                 pos.append(t[0])
         else:
             if tag[0] in tags:
@@ -34,7 +36,7 @@ def getNVM_lemma(text):
 
 def stop_words(word_token):
     # 불용어 처리
-    s_file_name = open("stopwords.txt", 'r', encoding="cp949")
+    s_file_name = open("../stopwords.txt", 'r', encoding="cp949")
 
     stop_list = []
 
@@ -68,38 +70,31 @@ def keyword_select(file, keyword):
     # keywords 5개 생성
     text_words = open(keyword + " keyword.txt", 'w')
 
-    words = 0
-    while words < 6:
+    for words in range(4):
         text_words.writelines(words_list[words])
         text_words.write("\n")
-        words = words + 1
+    text_words.writelines(words_list[words + 1])
     text_words.close()
 
     csv_create(words_list, keyword, file)
 
 
-def sub_main(filename):
-    csv_file = pd.read_csv(filename + ".csv", header=0, encoding='cp949')
+def sort_main(filename):
+    csv_file = pd.read_csv("../" + filename + ".csv", header=0, encoding='cp949')
     keyword = filename
-    #한번만 fake news 삭제
-    fake_news(csv_file,keyword)
-    
+    keyword_select(csv_file, keyword)
     for i in range(5):
-        keyword = filename + '_' + str(i + 1)
+        keyword = filename + '_' + str(i)
         first = pd.read_csv(keyword + ".csv", header=0, encoding='cp949')
         keyword_select(first, keyword)
 
 
-def fake_news (file,keyword):
-    # contents에 '기자' 미포함 시 행 삭제
-    fake = file[file['contents'].str.contains('기자', na=False)]
-    #하나라도 빈 칸이 있을 시 행 삭제
-    fake2 = df1[['years', 'company', 'contents','title','link']].dropna()
-    keyword_select(fake2,keyword)
-    #########계속 추가하기
-    
+# 본 파일 받아서 text_select 돌리기
+# 생성된 파일로 받기
+
 
 # 빈도수 많은 순으로 재정리
+
 
 def frequency(vect, dtm, keyword):
     vocab = dict()
@@ -118,24 +113,19 @@ def frequency(vect, dtm, keyword):
             for i in range(5):
                 if list_file[i] in words_list :
                     words_list.remove(list_file[i])
-    if "대하" in words_list :
-        words_list.remove("대하")
     if "위하" in words_list:
         words_list.remove("위하")
-    print(words[0:5])
+    if "데히" in words_list:
+        words_list.remove("대하")
+    if "따르" in words_list:
+        words_list.remove("따르")
     return words_list
 
 
 def csv_create(words_list, keyword, file):
     for repeat in range(5):
-        outputfile = keyword + "_" + str(repeat + 1)
+        outputfile = keyword + "_" + str(repeat)
         outputfile = str(outputfile)
         output_file1 = open(outputfile + '.csv', 'w', newline='', encoding='cp949')
-        print(words_list[repeat])
         keyword1 = file.loc[file['contents'].str.contains(words_list[repeat], na=False)]
         keyword1.to_csv(output_file1, index=False)
-# return(output_file1)
-
-
-# if __name__=='__main__':
-#     main()
